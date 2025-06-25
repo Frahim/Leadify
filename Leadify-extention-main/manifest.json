@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "Leadify",
+    "version": "1.0",
+    "permissions": [
+      "tabs",
+      "scripting",
+      "storage",
+      "activeTab",
+      "clipboardWrite"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+    "host_permissions": [
+      "http://127.0.0.1:8000/*",
+      "https://www.linkedin.com/in/*"
+    ],
+    "action": {
+      "default_popup": "popup.html"
+      
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://www.linkedin.com/in/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
