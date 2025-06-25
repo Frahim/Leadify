@@ -14,8 +14,8 @@ class Lead extends Model
         'email1',
         'email2',
         'phone',
-        'cjobtitle',
-        'ccompany',
+        'designation',
+        'company',
         'location',
         'url',
     ];

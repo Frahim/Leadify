@@ -27,8 +27,8 @@ class LeadController extends Controller
             'email2' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'url' => 'nullable|url|unique:leads,url',
-            'cjobtitle' => 'nullable|string',
-            'ccompany' => 'required|string',
+            'designation' => 'nullable|string',
+            'company' => 'required|string',
             'location' => 'nullable|string',
            
         ]);
@@ -40,8 +40,8 @@ class LeadController extends Controller
             'email2' => $request->input('email2'),
             'phone' => $request->input('phone'),
             'url' => $request->input('url'),
-            'cjobtitle' => $request->input('cjobtitle'),           
-            'ccompany' => $request->input('ccompany'),
+            'designation' => $request->input('designation'),           
+            'company' => $request->input('company'),
             'location' => $request->input('location'),
             
         ]);
@@ -58,8 +58,8 @@ class LeadController extends Controller
         'leads.*.email2' => 'nullable|email2|max:255',        
         'leads.*.phone' => 'nullable|string|max:20',
         'leads.*.url' => 'nullable|string',
-        'leads.*.cjobtitle' => 'nullable|string',
-        'leads.*.ccompany' => 'nullable|string',
+        'leads.*.designation' => 'nullable|string',
+        'leads.*.company' => 'nullable|string',
         'leads.*.location' => 'nullable|string',
     ]);
 

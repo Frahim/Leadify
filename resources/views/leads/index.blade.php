@@ -33,8 +33,8 @@
                     <tr>
                         
                         <td class="p-4 border ">{{ $lead->name }}</td>
-                        <td class="p-4 border  ">{{ $lead->cjobtitle }}</td>
-                        <td class="p-4 border ">{{ $lead->ccompany }}</td>
+                        <td class="p-4 border  ">{{ $lead->designation }}</td>
+                        <td class="p-4 border ">{{ $lead->company }}</td>
                         <td class="p-4 border ">{{ $lead->location }}</td>
                         <td class="p-4 border  ">{{ $lead->email1 }}</td>
                         <td class="p-4 border  ">{{ $lead->email2 }}</td>

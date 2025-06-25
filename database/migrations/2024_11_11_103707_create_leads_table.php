@@ -18,8 +18,8 @@ return new class extends Migration
         $table->string('email1')->nullable();
         $table->string('email2')->nullable();        
         $table->string('phone')->nullable();
-        $table->text('cjobtitle')->nullable();
-        $table->text('ccompany')->nullable();
+        $table->text('designation')->nullable();
+        $table->text('company')->nullable();
         $table->text('location')->nullable();
         $table->text('url')->nullable();
         $table->timestamps();
