@@ -1,0 +1,12 @@
+.bg-teal-400{
+  background-color: rgb(45 212 191);
+}
+
+button, .btn  {
+    width: 150px;
+    background: #3ac7ff;
+    padding: 9px 15px;
+    border-radius: 5px;
+}
+
+.logo-wrapper{border-radius: 5px;}

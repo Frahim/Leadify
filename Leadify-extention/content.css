@@ -1,0 +1,140 @@
+/* Ensure the font is consistent or use a system font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+#leadifyPanel {
+    /* Positioning and Sizing */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px; /* Adjust width as needed */
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Enable scrolling if content overflows vertically */
+    z-index: 2147483647; /* Maximum z-index to stay on top */
+
+    /* Appearance */
+    background-color: #ffffff; /* White background */
+    box-shadow: -4px 0 15px rgba(0,0,0,0.1); /* Shadow on the left side */
+    border-left: 1px solid #e0e0e0; /* Subtle border */
+    font-family: 'Inter', Arial, sans-serif;
+    color: #333;
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in width */
+
+    /* Animation for smooth appearance/disappearance */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateX(100%); /* Start off-screen to the right */
+    opacity: 0;
+    visibility: hidden; /* Ensure it's not interactive when hidden */
+}
+
+#leadifyPanel.visible {
+    transform: translateX(0); /* Slide in */
+    opacity: 1;
+    visibility: visible;
+}
+
+#leadifyPanel .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0; /* Separator for header */
+}
+
+#leadifyPanel h3 {
+    margin: 0;
+    font-size: 1.6em;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+#leadifyPanel .close-button {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#leadifyPanel .close-button:hover {
+    background-color: #f0f0f0;
+    color: #555;
+}
+
+#leadifyPanel p {
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+#leadifyPanel .logged-in-info {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #e9f5ff; /* Light blue background */
+    border-radius: 8px;
+    border: 1px solid #cceeff;
+    color: #0056b3;
+}
+#leadifyPanel .logged-in-info strong {
+    font-weight: 600;
+}
+
+
+#leadifyPanel .button-group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#leadifyPanel button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    color: white;
+    background-color: #3498db;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+}
+
+#leadifyPanel button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+}
+#leadifyPanel button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+}
+
+#leadifyPanel button.logout-button {
+    background-color: #e74c3c;
+    margin-top: 20px; /* Space above logout button */
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+}
+#leadifyPanel button.logout-button:hover {
+    background-color: #c0392b;
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+}
+
+#leadifyPanel .message {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    word-wrap: break-word;
+}
+#leadifyPanel .message.success { background-color: #e6ffee; color: #28a745; border: 1px solid #c8e6c9; }
+#leadifyPanel .message.error { background-color: #ffe6e6; color: #dc3545; border: 1px solid #f5c6cb; }
+#leadifyPanel .message.info { background-color: #e0f7fa; color: #17a2b8; border: 1px solid #b2ebf2; }

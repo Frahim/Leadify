@@ -81,4 +81,13 @@ class LeadController extends Controller
             $headers
         );
     }
+
+
+
+    public function getAllLeads()
+{
+    $leads = Lead::select('url')->get();
+    return response()->json($leads);
+}
+
 }

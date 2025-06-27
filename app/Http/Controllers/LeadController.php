@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lead;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel; // Add this line
+use App\Imports\LeadsImport; // Add this line
+use Illuminate\Support\Facades\Log; // Add this line for logging
 
 class LeadController extends Controller
 {
     public function index()
     {
-        $leads = Lead::where('user_id', Auth::id())->get();
+        $leads = Lead::where('user_id', Auth::id())->latest()->paginate(10);
         return view('leads.index', compact('leads'));
     }
 
@@ -30,7 +33,6 @@ class LeadController extends Controller
             'designation' => 'nullable|string',
             'company' => 'required|string',
             'location' => 'nullable|string',
-           
         ]);
 
         Lead::create([
@@ -40,44 +42,71 @@ class LeadController extends Controller
             'email2' => $request->input('email2'),
             'phone' => $request->input('phone'),
             'url' => $request->input('url'),
-            'designation' => $request->input('designation'),           
+            'designation' => $request->input('designation'),
             'company' => $request->input('company'),
             'location' => $request->input('location'),
-            
         ]);
 
         return redirect()->route('leads.index')->with('success', 'Lead added successfully.');
     }
 
-    public function import(Request $request)
-{
-    $request->validate([
-        'leads' => 'required|array',
-        'leads.*.name' => 'nullable|string|max:255',
-        'leads.*.email1' => 'nullable|email1|max:255',
-        'leads.*.email2' => 'nullable|email2|max:255',        
-        'leads.*.phone' => 'nullable|string|max:20',
-        'leads.*.url' => 'nullable|string',
-        'leads.*.designation' => 'nullable|string',
-        'leads.*.company' => 'nullable|string',
-        'leads.*.location' => 'nullable|string',
-    ]);
-
-    foreach ($request->input('leads') as $leadData) {
-        $leadDataWithUserId = array_merge($leadData, ['user_id' => Auth::id()]);
-        Log::info('Importing lead:', $leadDataWithUserId);
-        Lead::create($leadDataWithUserId);
+    // This method will display the import form
+    public function showImportForm()
+    {
+        return view('leads.import');
     }
 
-    return response()->json(['message' => 'Leads imported successfully.'], 200);
-}
+    // This method will handle the file upload and import
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:10240', // Max 10MB file size
+        ]);
+
+        try {
+            Excel::import(new LeadsImport, $request->file('file'));
+            return redirect()->route('leads.index')->with('success', 'Leads imported successfully!');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errors = [];
+            foreach ($failures as $failure) {
+                $errors[] = 'Row ' . $failure->row() . ': ' . implode(', ', $failure->errors()) . ' (Value: ' . implode(', ', $failure->values()) . ')';
+            }
+            return redirect()->back()->with('error', 'Import failed due to validation errors.')->withErrors($errors);
+        } catch (\Exception $e) {
+            Log::error('Lead import error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred during import: ' . $e->getMessage());
+        }
+    }
 
 
-public function exportJson()  
-{  
-    $leads = Lead::where('user_id', Auth::id())->get();  
+    public function exportJson()
+    {
+        $leads = Lead::where('user_id', Auth::id())->get();
 
-    return response()->json($leads);  
-}  
+        return response()->json($leads);
+    }
 
+
+// Search
+    public function ajaxSearch(Request $request)
+    {
+        $search = $request->input('q');
+
+        $query = Lead::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('email1', 'like', "%$search%")
+                    ->orWhere('email2', 'like', "%$search%")
+                    ->orWhere('designation', 'like', "%$search%")
+                    ->orWhere('company', 'like', "%$search%")
+                    ->orWhere('location', 'like', "%$search%")
+                    ->orWhere('url', 'like', "%$search%");
+            });
+        }
+
+        return response()->json($query->limit(50)->get());
+    }
 }

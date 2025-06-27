@@ -30,8 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
     Route::get('/leads/create', [LeadController::class, 'create'])->name('leads.create');
     Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
+   // Route::post('/leads/import', [LeadController::class, 'import'])->name('leads.import');
+   // Route::get('/leads/export', [LeadController::class, 'exportJson'])->name('leads.exportJson');
+
+   Route::get('/leads/import', [LeadController::class, 'showImportForm'])->name('leads.import.form');
     Route::post('/leads/import', [LeadController::class, 'import'])->name('leads.import');
-    Route::get('/leads/export', [LeadController::class, 'exportJson'])->name('leads.exportJson');
    
 });
 
@@ -40,6 +43,11 @@ require __DIR__.'/auth.php';
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Route::get('/all-leads/search', [LeadController::class, 'searchView'])->name('leads.search');
+Route::get('/ajax/leads/search', [\App\Http\Controllers\LeadController::class, 'ajaxSearch'])->name('leads.ajaxSearch');
+Route::view('/search-ajax', 'leads.search-ajax')->name('leads.search.ajax.view');
+
 
 
 Route::get('/fix', function () {
